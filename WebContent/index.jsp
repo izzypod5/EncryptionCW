@@ -7,6 +7,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>test</h1>
+<h1>Computer Security Coursework</h1>
+
+<!--  TODO: ADD ANIMATION -->
+
+<form action = "encryption" method = "POST">
+         Initial Text: <input type="text" name="init_text"/>
+         <input type = "submit" value = "Submit" />
+</form>
+     
 </body>
 </html>
