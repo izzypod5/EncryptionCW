@@ -54,53 +54,15 @@ public class EncryptionServlet extends HttpServlet {
 		doGet(request, response);
 	}
 
+	public static void main(String[] args) {
+		ShiftCeasar sc = new ShiftCeasar();
+		String text = "this is a very very long and complex text";
+		String cipper = sc.encrypt(text, 105);
+		System.out.println(cipper);
 
-public class ShiftCeasar {
-
-
-    public static String encrypt(String plaintext, int shift){
-        if(shift > 26){
-          shift%=26;
-        }
-        String cipher = "";
-        int textlenght = plaintext.length();
-          for (int i = 0; i<textlenght; i++){
-
-            char c = plaintext.charAt(i);
-            char ch = (char)(c+shift);
-            cipher +=ch;
-
-          }
-
-        return cipher;
-    }
-    public static String dencrypt(String plaintext, int shift){
-      if(shift > 26){
-        shift%=26;
-      }else{
-
-      }
-        String cipher = "";
-        int textlenght = plaintext.length();
-          for (int i = 0; i<textlenght; i++){
-
-            char c = plaintext.charAt(i);
-            char ch = (char)(c-shift);
-            cipher +=ch;
-
-          }
-
-        return cipher;
-    }
-public static void main(String[] args) {
-  String text = "this is a very very long and complex text";
-  String cipper= encrypt(text,105);
-  System.out.println(cipper);
-
-  String text2 = "uijt!jt!b!wfsz!wfsz!mpoh!boe!dpnqmfy!ufyu";
-  String cipper2= dencrypt(text2,105);
-  System.out.println(cipper2);
-}
-
+		String text2 = "uijt!jt!b!wfsz!wfsz!mpoh!boe!dpnqmfy!ufyu";
+		String cipper2 = sc.dencrypt(text2, 105);
+		System.out.println(cipper2);
+	}
 
 }
