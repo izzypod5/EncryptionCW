@@ -60,15 +60,4 @@ public class EncryptionServlet extends HttpServlet {
 		response.getWriter().write(encryptedText);
 	}
 
-	public static void main(String[] args) {
-		ShiftCeasar sc = new ShiftCeasar();
-		String text = "this is a very very long and complex text";
-		String cipper = sc.encrypt(text, 105);
-		System.out.println(cipper);
-
-		String text2 = "uijt!jt!b!wfsz!wfsz!mpoh!boe!dpnqmfy!ufyu";
-		String cipper2 = sc.dencrypt(text2, 105);
-		System.out.println(cipper2);
-	}
-
 }
