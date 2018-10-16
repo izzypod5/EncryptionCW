@@ -30,10 +30,6 @@ public class EncryptionServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String init_text = request.getParameter("init_text");
-		System.out.println("Initial Text: " + init_text);
-
-		// TODO: ADD ENCRYPTION FUNCTIONALITY
 
 		/*
 		 * PrintWriter out = response.getWriter(); out.println("<html>\n" +
@@ -50,8 +46,18 @@ public class EncryptionServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String initText = request.getParameter("init_text");
+		System.out.println("Initial Text: " + initText);
+
+		// TODO: ADD ENCRYPTION FUNCTIONALITY
+		ShiftCeasar sc = new ShiftCeasar();
+		String encryptedText = sc.encrypt(initText, 4);
+
+		System.out.println("Encrypted Text: " + encryptedText);
+
+		response.setContentType("text/plain"); // for jquery to know response
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(encryptedText);
 	}
 
 	public static void main(String[] args) {
