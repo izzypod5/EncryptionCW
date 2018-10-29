@@ -22,6 +22,12 @@ System.out.println(firstPrime);
 System.out.println(secondPrime);
 System.out.println("The product of two Prime number is: " + sumOfPrime);
 
+  int erre = ComputeR(firstPrime,secondPrime);
+
+System.out.println("R is " + erre);
+
+int E = computeE(erre);
+System.out.println("E is the value = " +E);
     }
 
 
@@ -39,15 +45,50 @@ public static boolean isPrimeBruteForce(int number) {
 public static int GeneratePrimeRandon(){
     Random rand = new Random();
     int n = rand.nextInt(500)+100;
-    //TODO:adjusting the +100 regulate the range
+    //TODO:adjusting the +100 regulate the rangecd
       if(isPrimeBruteForce(n) == false){
         int m = GeneratePrimeRandon();
         return m;
       }else{
   return n;
+
     }
   }
 
+  public static int ComputeR(int q,int p){
+   int  p1 = p-1;
+   int q2 = q-1;
+
+    int r = p1*q2;
+    return r;
+  }
+
+  public static int computeE(int r){
+    Random random = new Random();
+
+    int e = random.nextInt(r)+1;
+    if (CheckFactor(e,r)==true){
+
+      computeE(r);
+    return e;}
+    return e;
+  }
+
+  public static boolean CheckFactor(int c,int r){
+      int x = c;
+      boolean isFactor = true;
+
+      if ( x>0 && x%r==0){
+        return isFactor;
+
+      }else{
+        isFactor=false;
+        return isFactor;
+      }
+
+
+
+  }
 
 
 }
