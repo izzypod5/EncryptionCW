@@ -1,0 +1,61 @@
+.main {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+	width: 80%;
+	height: 80%;
+	border-radius: 5px;
+	background-color: #f6f6f6;
+	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2), 0 0px 20px 0
+		rgba(0, 0, 0, 0.19);
+}
+
+.seperate {
+	height: 100%;
+}
+
+.box-contacts {
+	border-right: 1px solid #888888;
+	overflow-y: auto;
+}
+
+img {
+	border-radius: 50%;
+}
+
+.avatar {
+	margin-top: 10px;
+	width: 60px;
+}
+
+.contact-name {
+	margin-top: 10px;
+	padding-left: 15px;
+}
+
+.contact-chat {
+	font-size: 10px;
+	padding-left: 15px;
+}
+
+.contact-box {
+	border-bottom: 1px solid grey;
+}
+
+.contact-box:hover {
+	background-color: #E8E8E8;
+}
+
+.contact-box-active {
+	border-bottom: 1px solid grey;
+	background-color: #DCDCDC;
+}
+
+.chat-box {
+	position: absolute;
+	bottom: 0;
+	width: 96%;
+}
