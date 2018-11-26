@@ -6,6 +6,9 @@ import java.math.*;
 public class GenerateRandPrime {
 
  public static void main(String[] args) {
+
+
+
     int firstPrime = GeneratePrimeRandon();
     int secondPrime = GeneratePrimeRandon();
     int N = conputeN(firstPrime,secondPrime);
@@ -75,8 +78,7 @@ public static BigInteger largePrime(int bit) {
 		return bigPrime;
 	}
 
-
-
+public static BigInteger generateRandomLarge(int ) {}
 
 
 

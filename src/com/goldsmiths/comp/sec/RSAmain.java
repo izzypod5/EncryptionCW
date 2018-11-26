@@ -16,7 +16,7 @@ BigInteger phi = computePhi(p,q);
 System.out.println("p is : " + p );
 System.out.println("q is : " + q );
 System.out.println("n is : " + n );
-System.out.println("the value of phi () is : " + phi);
+System.out.println("the value of phi () is : " + phi); 
 
 
 
