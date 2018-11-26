@@ -1,7 +1,9 @@
+package com.goldsmiths.comp.sec;
+
 import java.util.*;
 
 
-Class Encrypt{
+class Encrypt{
 
 int a ;
 int b;
