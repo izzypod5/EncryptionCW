@@ -1,71 +1,49 @@
 //package com.goldsmiths.comp.sec;
 import java.util.*;
+import java.math.*;
+
 
 public class GenerateRandPrime {
 
  public static void main(String[] args) {
-   //int a = 4;
-  // int b = 7;
-  // int x = 157;
-  //  boolean isPrime1 =  isPrimeBruteForce(a);
-  //  boolean isPrime2 =  isPrimeBruteForce(b);
-  //  boolean isPrime3 =  isPrimeBruteForce(x);
-
     int firstPrime = GeneratePrimeRandon();
     int secondPrime = GeneratePrimeRandon();
     int N = conputeN(firstPrime,secondPrime);
-    int E = ComputeR(firstPrime,secondPrime);
+    int r = ComputeR(firstPrime,secondPrime);
+    int E = computeE(r);
+    System.out.println("value of small r is : " + r);
+    //ComputeR(firstPrime,secondPrime);
     int D = (int)FindInverse(E, N);
-
     int keyPublic []= new int[2];
     keyPublic [0]=E;
     keyPublic [1]=N;
     int keyPrivate []= new int[2];
     keyPrivate [0]=D;
     keyPrivate [1]=N;
-
-
-
   //  int keyPrivate = new int[2];
-
-
-
-
 //System.out.println("is "+ a +" prime? "+isPrime1);
 //System.out.println("is "+ b +" prime? "+isPrime2);
 //System.out.println("is "+ x +" prime? " +isPrime3);
-int m = 123456;
-
+int m = 4321;
 System.out.println("original message is: " + m);
-
 System.out.println(firstPrime);
 System.out.println(secondPrime);
 System.out.println("The product of two Prime number(N) is: " + N);
 System.out.println("The computation of E is: " + E);
 System.out.println("The value of D is: " + D );
 System.out.println("The value of keyPublic is: "   );
-
 //TODO: generate keys in a function
 //generatePairKey(firstPrime , secondPrime);
-
 //System.out.println("R is " + r);
-
 //System.out.println("E is the value = " +e);
 for (int i = 0; i<keyPublic.length;i++){
   System.out.println( keyPublic[i]);
 }
 System.out.println("The value of private key is: " + keyPrivate[0] + "  "+keyPrivate[1]  );
-int c = doRSA(m,E,N);
-
-int om = doRSA(c,D,N);
-
-
-
+long c = doRSA(23,5,55);
 System.out.println("chipertext is: " + c);
-
+long om = doRSA((int)c,7,55);
 System.out.println("decripted message is: " + om);
-
-
     }
     /*
 public static long extendedmEuclidian(long a,long b){
@@ -90,33 +68,47 @@ public static long extendedmEuclidian(long a,long b){
       return null;
 }
 */
+
+public static BigInteger largePrime(int bit) {
+		Random random = new Random();
+		BigInteger bigPrime = BigInteger.probablePrime(bit, random);
+		return bigPrime;
+	}
+
+
+
+
+
+
+
   public static int doRSA(int x ,int e , int n ){
-      int y = 1;
-      int u = x % n;
+      int c =( x ^ e) % n;
 // n is e
 // m is n
-  System.out.println("e is : "+e);
-      while(e!=0){
-        //if odd number
-        System.out.println("e mod 2 is : "+e %2);
-
-        if(e%2 == 1){
-
-          y *= u % n;
-          System.out.println("y is : "+y);
-        }
-        //  divide e in 2
-        e = e/2;
-        System.out.println("e after div is : "+e);
-
-        if(e!=1){
-          u=u * u % n;
-          System.out.println("u  is : "+ u);
-
-        }
-
-      }
-      return y;
+  // System.out.println("e is : "+e);
+  //     while(e==0){
+  //       //if odd number
+  //       System.out.println("e mod 2 is : "+e %2);
+  //
+  //       if(e%2 == 1){
+  //
+  //         y = (y * u) % n;
+  //
+  //         System.out.println("y is : "+y);
+  //       }
+  //       //divide e by 2
+  //        e = e/2;
+  //
+  //       System.out.println("e after div is : "+e);
+  //
+  //       if(e!=1){
+  //         u= (u * u) % n;
+  //         System.out.println("u  is : "+ u);
+  //
+  //       }
+  //
+  //     }
+      return c;
 
 
     }
@@ -127,7 +119,7 @@ public static long extendedmEuclidian(long a,long b){
 
 public static int GeneratePrimeRandon(){
     Random random = new Random();
-    int rand = random.nextInt(5000)+1000;
+    int rand = random.nextInt(50)+10;
     //TODO:adjusting the +100 regulate the rangecd
       if(isPrimeBruteForce(rand) == false ){
         int m = GeneratePrimeRandon();
@@ -160,18 +152,20 @@ public static int conputeN(int q, int p){
    int  p2 = p-1;
    int q2 = q-1;
 
-    int r = p2*q2;
-    return r;
+    int rp = p2*q2;
+    return rp;
   }
 //trying to compute e in a random way....
-  public static int computeE(int r){
+
+  public static int computeE(int x){
     Random random = new Random();
 
-    int e = random.nextInt(r)+10000;
-    if (CheckFactor(e,r) ){
+    int e = random.nextInt(x-1)+3;
+    System.out.println(e);
+    //if (CheckFactor(e,x)){
 
-      computeE(r);
-    }
+    //  computeE(x);
+  //  }
     return e;
   }
 /*experiment to find the multiplicative inverse of e...
@@ -199,7 +193,9 @@ public static int conputeN(int q, int p){
        temp = b;
        b = a - q*temp;
        a = temp;
+       if(sign < 0){
        sign = -sign;
+     }
 
      }
      long answ = (r-(sign*s))%store;
@@ -216,12 +212,25 @@ public static int conputeN(int q, int p){
 
 
   public static boolean CheckFactor(int a,int b){
-      boolean isFactor = true;
-      int factor = b%a;
-      if ( a>0 && factor!=0){
-        isFactor=false;
-      }
-      return isFactor;
+    boolean isfactor = false;
+    int gcd = 1;
+    for(int i = 1; i <= a && i <= b; i++)
+        {
+            // Checks if i is factor of both integers
+            if(a % i==0 && b % i==0)
+            {
+                gcd = i;
+                isfactor = true;
+              }
+        }
+        return isfactor;
+
+      // boolean isFactor = true;
+      // int factor = b%a;
+      // if ( a>0 && factor!=0){
+      //   isFactor=false;
+      // }
+      // return isFactor;
   }
 
 
