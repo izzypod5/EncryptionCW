@@ -11,42 +11,58 @@ import java.util.Random;
  */
 public class GenerateRandPrime {
 
-	public static void main(String[] args) {
+	// message used for encryption
+	private BigInteger msg;
 
-		BigInteger firstPrime = generateRandomPrime();
-		BigInteger secondPrime = generateRandomPrime();
-		BigInteger n = conputeN(firstPrime, secondPrime);
-		BigInteger phi = computePhi(firstPrime, secondPrime); // p-1 * q-1
-		BigInteger e = findE(phi);
-		BigInteger d = findD(e, phi);
+	BigInteger firstPrime = generateRandomPrime();
+	BigInteger secondPrime = generateRandomPrime();
+	BigInteger n = conputeN(firstPrime, secondPrime);
+	BigInteger phi = computePhi(firstPrime, secondPrime); // p-1 * q-1
+	BigInteger e = findE(phi);
+	BigInteger d = findD(e, phi);
 
-		BigInteger[] keyPublic = new BigInteger[] { e, n };
-		BigInteger[] keyPrivate = new BigInteger[] { d, n };
+	BigInteger[] keyPublic = new BigInteger[] { e, n };
+	BigInteger[] keyPrivate = new BigInteger[] { d, n };
 
-		//original message passed
-		BigInteger m = BigInteger.valueOf(123456);
+	/**
+	 * Class constructor for RSA encryption class
+	 * 
+	 * @param msg
+	 */
+	public GenerateRandPrime(BigInteger msg) {
+		this.msg = msg;
 
-		//debugging
-		System.out.println("original message is: " + m);
+		// debugging
+		System.out.println("original message is: " + getMsg());
 		System.out.println("First Prime: " + firstPrime);
 		System.out.println("Second Prime: " + secondPrime);
-		System.out.println("Is firstprime actually prime? : " + isPrimeNumber(firstPrime));
-		System.out.println("Is secondPrime actually prime? : " + isPrimeNumber(secondPrime));
 		System.out.println("The product of two Prime number(N) is: " + n);
 		System.out.println("The computation of E is: " + e);
 		System.out.println("The value of D is: " + d);
-		System.out.println("The value of keyPublic is: ");
-		for (int i = 0; i < keyPublic.length; i++) {
-			System.out.println(keyPublic[i]);
-		}
+
+		System.out.println("The value of public key is: " + keyPublic[0] + "  " + keyPublic[1]);
 		System.out.println("The value of private key is: " + keyPrivate[0] + "  " + keyPrivate[1]);
 
-		BigInteger c = doRSA(m, e, n);
+	}
+
+	/**
+	 * Encryption method to be called when using the instance of the class
+	 */
+	public void encrypt() {
+		BigInteger c = doRSA(getMsg(), e, n);
+		// sets the msg field to the value of the cipher text
+		setMsg(c);
 		System.out.println("chipertext is: " + c);
+	}
 
-		BigInteger om = doRSA(c, d, n);
+	/**
+	 * Decryption method to be called when using the instance of the class
+	 */
+	public void decrypt() {
+		BigInteger om = doRSA(getMsg(), d, n);
 		System.out.println("decripted message is: " + om);
-
+		// sets the msg field to the value of the decrypted text
+		setMsg(om);
 	}
 
 	/**
@@ -80,8 +96,7 @@ public class GenerateRandPrime {
 			a = BigInteger.valueOf(1);
 		}
 
-		return a.modPow(possPrime.subtract(BigInteger.ONE), possPrime)
-				.compareTo(BigInteger.ONE) == 0;
+		return a.modPow(possPrime.subtract(BigInteger.ONE), possPrime).compareTo(BigInteger.ONE) == 0;
 	}
 
 	/**
@@ -151,6 +166,24 @@ public class GenerateRandPrime {
 	 */
 	public static BigInteger computePhi(BigInteger p, BigInteger q) {
 		return p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+	}
+
+	/**
+	 * Getter for the msg field
+	 * 
+	 * @return the value of the msg field
+	 */
+	public BigInteger getMsg() {
+		return msg;
+	}
+
+	/**
+	 * Setter for the msg field
+	 * 
+	 * @param msg
+	 */
+	public void setMsg(BigInteger msg) {
+		this.msg = msg;
 	}
 
 }
