@@ -1,9 +1,7 @@
 package com.goldsmiths.comp.sec;
 
 import java.math.BigInteger;
-import java.util.*;
-
-import com.sun.org.apache.xpath.internal.operations.Equals;
+import java.util.Random;
 
 /***
  * 
@@ -13,50 +11,67 @@ import com.sun.org.apache.xpath.internal.operations.Equals;
  */
 public class GenerateRandPrime {
 
-	public static void main(String[] args) {
+	// message used for encryption
+	private BigInteger msg;
 
-		//System.out.println("Result of primality test: " + isPrimeNumber(new BigInteger("37")));
-		BigInteger firstPrime = BigInteger.valueOf(generateRandomPrime());
-		BigInteger secondPrime = BigInteger.valueOf(generateRandomPrime());
-		BigInteger N = conputeN(firstPrime, secondPrime);
-		BigInteger phi = computePhi(firstPrime, secondPrime); //p-1 * q-1
-		BigInteger E = findE(phi);
-		BigInteger D = findD(E, phi);
-		
-		//BigInteger D = findInverse(E, N);
+	BigInteger firstPrime = generateRandomPrime();
+	BigInteger secondPrime = generateRandomPrime();
+	BigInteger n = conputeN(firstPrime, secondPrime);
+	BigInteger phi = computePhi(firstPrime, secondPrime); // p-1 * q-1
+	BigInteger e = findE(phi);
+	BigInteger d = findD(e, phi);
 
-		BigInteger[] keyPublic = new BigInteger[] {E, N};
-		BigInteger[] keyPrivate = new BigInteger[] {D, N};
+	BigInteger[] keyPublic = new BigInteger[] { e, n };
+	BigInteger[] keyPrivate = new BigInteger[] { d, n };
 
-		BigInteger m = new BigInteger("123456");
+	/**
+	 * Class constructor for RSA encryption class
+	 * 
+	 * @param msg
+	 */
+	public GenerateRandPrime(BigInteger msg) {
+		this.msg = msg;
 
-		System.out.println("original message is: " + m);
-
+		// debugging
+		System.out.println("original message is: " + getMsg());
 		System.out.println("First Prime: " + firstPrime);
 		System.out.println("Second Prime: " + secondPrime);
-		System.out.println("Is firstprime actually prime? : " + isPrimeNumber(firstPrime));
-		System.out.println("Is secondPrime actually prime? : " + isPrimeNumber(secondPrime));
-		System.out.println("The product of two Prime number(N) is: " + N);
-		System.out.println("The computation of E is: " + E);
-		System.out.println("The value of D is: " + D);
-		System.out.println("The value of keyPublic is: ");
+		System.out.println("The product of two Prime number(N) is: " + n);
+		System.out.println("The computation of E is: " + e);
+		System.out.println("The value of D is: " + d);
 
-		for (int i = 0; i < keyPublic.length; i++) {
-			System.out.println(keyPublic[i]);
-		}
+		System.out.println("The value of public key is: " + keyPublic[0] + "  " + keyPublic[1]);
 		System.out.println("The value of private key is: " + keyPrivate[0] + "  " + keyPrivate[1]);
-		BigInteger c = m.modPow(E, N);
-		BigInteger om = c.modPow(D, N);
-/*		BigInteger c = doRSA(m, E, N);
-
-		BigInteger om = doRSA(c, D, N);*/
-
-		System.out.println("chipertext is: " + c);
-
-		System.out.println("decripted message is: " + om);
 
 	}
-	
+
+	/**
+	 * Encryption method to be called when using the instance of the class
+	 */
+	public void encrypt() {
+		BigInteger c = doRSA(getMsg(), e, n);
+		// sets the msg field to the value of the cipher text
+		setMsg(c);
+		System.out.println("chipertext is: " + c);
+	}
+
+	/**
+	 * Decryption method to be called when using the instance of the class
+	 */
+	public void decrypt() {
+		BigInteger om = doRSA(getMsg(), d, n);
+		System.out.println("decripted message is: " + om);
+		// sets the msg field to the value of the decrypted text
+		setMsg(om);
+	}
+
+	/**
+	 * Computes the value of D
+	 * 
+	 * @param e
+	 * @param phi
+	 * @return value of D
+	 */
 	private static BigInteger findD(BigInteger e, BigInteger phi) {
 		return e.modInverse(phi);
 	}
@@ -64,7 +79,8 @@ public class GenerateRandPrime {
 	/**
 	 * Returns the result of primality test using Fermat's Little Theorum
 	 * 
-	 * @param possPrime testing input for primality
+	 * @param possPrime
+	 *            testing input for primality
 	 * @return boolean value for primality
 	 */
 	public static boolean isPrimeNumber(BigInteger possPrime) {
@@ -72,96 +88,64 @@ public class GenerateRandPrime {
 		if (possPrime.compareTo(BigInteger.ONE) <= 0) {
 			throw new IllegalArgumentException("Given prime must be greater than 1");
 		}
-		
-		int a = 2; //must be an integer between 1 and p-1
-		
-		//check for equality to 2
-		if (possPrime.compareTo(BigInteger.valueOf(2)) == 0) {
-			a = 1;
-		}
-		
-		//System.out.println(BigInteger.valueOf(a).modPow(possPrime.subtract(BigInteger.valueOf(1)), possPrime).compareTo(BigInteger.valueOf(1)) == 0);
 
-		return BigInteger.valueOf(a).modPow(possPrime.subtract(BigInteger.valueOf(1)), possPrime).compareTo(BigInteger.valueOf(1)) == 0;
+		BigInteger a = BigInteger.valueOf(2); // must be an integer between 1 and p-1
+
+		// check for equality to 2
+		if (possPrime.compareTo(BigInteger.valueOf(2)) == 0) {
+			a = BigInteger.valueOf(1);
+		}
+
+		return a.modPow(possPrime.subtract(BigInteger.ONE), possPrime).compareTo(BigInteger.ONE) == 0;
 	}
 
 	/**
-	 * Used to perform encryption to get the cipher text or decryption to return the original message
+	 * Used to perform encryption to get the cipher text or decryption to return the
+	 * original message
 	 * 
 	 * @param x
 	 * @param e
 	 * @param n
-	 * @return the value returned after the computation of the: c = m^e mod n | m = c^d mod n
+	 * @return the value returned after the computation of the: c = m^e mod n | m =
+	 *         c^d mod n
 	 */
-	public static BigInteger doRSA(BigInteger x, BigInteger e, BigInteger n) {
-		BigInteger y = new BigInteger("1");
-		BigInteger u = x.mod(n);
-		// n is e
-		// m is n
-		System.out.println("e is : " + e);
-		while (e.compareTo(BigInteger.valueOf(0)) != 0) {
-			// if odd number
-			System.out.println("e mod 2 is : " + e.mod(BigInteger.valueOf(2)));
+	public static BigInteger doRSA(BigInteger msg, BigInteger exp, BigInteger mod) {
 
-			if (e.mod(BigInteger.valueOf(2)).compareTo(BigInteger.valueOf(1)) == 0) {
-
-				y = y.multiply(u.mod(n));
-				System.out.println("y is : " + y);
-			}
-			// divide e in 2
-			e = e.divide(BigInteger.valueOf(2));
-			System.out.println("e after div is : " + e);
-
-			if (e.compareTo(BigInteger.valueOf(1)) != 0) {
-				u = u.multiply(u.mod(n));
-				System.out.println("u  is : " + u);
-
-			}
-
-		}
-		return y;
+		return msg.modPow(exp, mod);
 
 	}
-	
+
+	/**
+	 * Computes the value of E
+	 * 
+	 * @param phi
+	 * @return value of E
+	 */
 	public static BigInteger findE(BigInteger phi) {
-/*		BigInteger e = BigInteger.valueOf(generateRandomPrime());
-		do {
-			e = BigInteger.valueOf(generateRandomPrime());
-			// while e is bigger than phi
-			while(e.compareTo(phi) == 1) {
-				e = BigInteger.valueOf(generateRandomPrime());
-			}
-		} while(!e.gcd(phi).equals(BigInteger.ONE));
-		return e;*/
-		
-		BigInteger e = BigInteger.valueOf(generateRandomPrime());
+		BigInteger e = generateRandomPrime();
 		// while phi gcd with e is greater than 1 and e is less than phi - add 1 to E
-        while (phi.gcd(e).compareTo(BigInteger.ONE) > 0 && e.compareTo(phi) < 0)
-        {
-            e.add(BigInteger.ONE);
-        }
-        return e;
+		while (phi.gcd(e).compareTo(BigInteger.ONE) > 0 && e.compareTo(phi) < 0) {
+			e = e.add(BigInteger.ONE);
+		}
+		return e;
 	}
 
-	public static int generateRandomPrime() {
+	/**
+	 * Utility method for returning a random prime number
+	 * 
+	 * @return random prime bigint
+	 */
+	public static BigInteger generateRandomPrime() {
 		Random random = new Random();
-		int rand = random.nextInt(5000) + 1000;
+		BigInteger rand = BigInteger.valueOf(random.nextInt(5000) + 1000);
 		// TODO:adjusting the +100 regulate the rangecd
-		if (!isPrimeNumber(BigInteger.valueOf(rand))) {
+		if (!isPrimeNumber(rand)) {
 			return generateRandomPrime();
 		} else {
 			return rand;
 		}
 	}
 
-	public static boolean isPrimeBruteForce(int number) {
-		for (int i = 2; i < number; i++) {
-			if (number % i == 0) {
-				return false;
-			}
-		}
-		return true;
-	}
 	/**
 	 * Computes the value of N being the multiplication of the two primes
 	 * 
@@ -181,50 +165,25 @@ public class GenerateRandPrime {
 	 * @return (p-1) * (q-1)
 	 */
 	public static BigInteger computePhi(BigInteger p, BigInteger q) {
-		return p.subtract(BigInteger.valueOf(1)).multiply(q.subtract(BigInteger.valueOf(1)));
+		return p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 	}
 
-	// trying to compute e in a random way....
-/*	public static int computeE(int r) {
-		Random random = new Random();
-
-		int e = random.nextInt(r) + 10000;
-		if (checkFactor(e, r)) {
-			computeE(r);
-		}
-		return e;
-	}*/
-
-	//e * d mod r = 1
-	public static BigInteger findInverse(BigInteger e, BigInteger n) {
-		BigInteger store = e;
-		BigInteger temp;
-		BigInteger q;
-		BigInteger sign = new BigInteger("1");
-		BigInteger r = new BigInteger("1");
-		BigInteger s = new BigInteger("0");
-		while (n.compareTo(BigInteger.valueOf(0)) != 0) {
-			q = e.divide(n);
-			temp = r;
-			r = temp.multiply(q).add(r);
-			s = temp;
-			temp = n;
-			n = e.subtract(q.multiply(temp));
-			e = temp;
-			sign = sign.negate();
-
-		}
-		return r.subtract(sign.multiply(s)).mod(store);
-
+	/**
+	 * Getter for the msg field
+	 * 
+	 * @return the value of the msg field
+	 */
+	public BigInteger getMsg() {
+		return msg;
 	}
 
-	public static boolean checkFactor(int a, int b) {
-		boolean isFactor = true;
-		int factor = b % a;
-		if (a > 0 && factor != 0) {
-			isFactor = false;
-		}
-		return isFactor;
+	/**
+	 * Setter for the msg field
+	 * 
+	 * @param msg
+	 */
+	public void setMsg(BigInteger msg) {
+		this.msg = msg;
 	}
-	
+
 }
