@@ -4,12 +4,12 @@ import java.math.BigInteger;
 import java.util.Random;
 
 /***
- * 
+ * This class acts as the RSA implementation class.
  * 
  * @author Mariano Pekoenja , Adam Letch, Desmond Pitt
  *
  */
-public class GenerateRandPrime {
+public class RSAImpl {
 
 	// message used for encryption
 	private BigInteger msg;
@@ -29,7 +29,7 @@ public class GenerateRandPrime {
 	 * 
 	 * @param msg
 	 */
-	public GenerateRandPrime(BigInteger msg) {
+	public RSAImpl(BigInteger msg) {
 		this.msg = msg;
 
 		// debugging

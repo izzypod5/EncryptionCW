@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
 
-/***
+import com.goldsmiths.comp.sec.model.User;
+
+/**
  * 
  * 
  * @author Mariano Pekoenja , Adam Letch, Desmond Pitt
@@ -49,13 +51,15 @@ class menu {
 		System.out.println("In part1");
 		System.out.println("Please enter the message you wish to be encrypted:");
 		BigInteger input = new BigInteger(in.readLine());
-		GenerateRandPrime rsa = new GenerateRandPrime(input);
+		RSAImpl rsa = new RSAImpl(input);
 		rsa.encrypt();
 		rsa.decrypt();
 	}
 
 	private void part2() {
 		System.out.println("In part2");
+		User alice = new User();
+		User bob = new User();
 	}
 
 	public static void main(String[] args) {
