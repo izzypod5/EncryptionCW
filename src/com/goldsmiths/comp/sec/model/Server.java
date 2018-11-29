@@ -1,8 +1,12 @@
 package com.goldsmiths.comp.sec.model;
 
+import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
 import java.util.ArrayList;
+
+import sun.misc.BASE64Encoder;
 
 /**
  * This class acts as the trusted server which distributes public keys on behalf
@@ -29,13 +33,14 @@ public class Server {
 	public Server(ArrayList<User> users, int serverKeySize) {
 		this.users = users;
 		try {
-			this.publicKey = this.generateKey(serverKeySize);
+			this.publicKey = new Key(this.generateKey(serverKeySize));
 			System.out.println("Server's public key: " + this.getPublicKey().getValue());
 			// generation of users public keys
 			for (int i = 0; i < users.size(); i++) {
-				Key generatedKey = generateKey(serverKeySize);
+				Key generatedKey = new Key(generateKey(serverKeySize), users.get(i));
 				users.get(i).setPublicKey(generatedKey);
-				System.out.println(users.get(i).getName() + "'s public key: " + users.get(i).getPublicKey().getValue());
+				System.out.println(
+						users.get(i).getName() + "'s public key: " + users.get(i).getPublicKey().getStringValue());
 			}
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
@@ -50,28 +55,39 @@ public class Server {
 	 * @return
 	 * @throws NoSuchAlgorithmException
 	 */
-	public Key generateKey(int keySize) throws NoSuchAlgorithmException {
-		KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-		keyGen.initialize(keySize);
-		byte[] generatedKey = keyGen.genKeyPair().getPublic().getEncoded();
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < generatedKey.length; ++i) {
-			sb.append(Integer.toHexString(0x0100 + (generatedKey[i] & 0x00FF)).substring(1));
-		}
-		Key key = new Key(sb.toString());
-		return key;
+	public KeyPair generateKey(int keySize) throws NoSuchAlgorithmException {
+		KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+		kpg.initialize(keySize);
+		return kpg.genKeyPair();
 	}
 
 	/**
-	 * Signs a key
+	 * Signs a key using the servers private key and can be decrypted using the
+	 * known public key of the server
 	 * 
 	 * @param key
 	 * @return
 	 */
-	public Key signKey(Key key) {
+	public byte[] signKey(Key desiredKey) {
+		byte[] data = desiredKey.getStringValue().getBytes();
 		// TODO: sign given key from user using the servers public key
-		System.out.println("Signing key from: " + key.getOwner());
-		return key;
+		System.out.println("Signing key from: " + desiredKey.getOwner().getName());
+		try {
+			// sign using the servers known public key using sha1 rsa
+			Signature sig;
+			sig = Signature.getInstance("SHA1WithRSA");
+
+			sig.initSign(getPublicKey().getValue().getPrivate());
+			sig.update(data);
+			byte[] sigBytes = sig.sign();
+			System.out.println("Signature:" + new BASE64Encoder().encode(sigBytes));
+			// signing the key given to uswhich is the users public key
+			sig.initVerify(getPublicKey().getValue().getPublic());
+			sig.update(data);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return data;
 	}
 
 	/**
@@ -80,8 +96,9 @@ public class Server {
 	 * @param user
 	 *            to be communicated to
 	 * @return
+	 * @throws NoSuchAlgorithmException
 	 */
-	public Key sendResponse(User user) {
+	public byte[] sendResponse(User user) {
 		// signing of requested users stored public key
 		for (int i = 0; i < users.size(); i++) {
 			User current = users.get(i);

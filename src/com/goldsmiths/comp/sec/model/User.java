@@ -22,6 +22,12 @@ public class User {
 		server.setCurrentRequest(request);
 	}
 	
+	/**
+	 * Sets a nonce value to the request
+	 * 
+	 * @param request
+	 * @return
+	 */
 	public Request sendNonce(Request request) {
 		BigInteger randomBigInt = randomBigInteger(BigInteger.valueOf(1000000));
 		System.out.println("Random Big Int value: " + randomBigInt);

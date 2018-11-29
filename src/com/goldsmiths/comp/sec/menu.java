@@ -75,16 +75,17 @@ class menu {
 		//alice sends request to server
 		alice.sendRequest(server, request);
 		//signed key returned from server response
-/*		Key signedKey = server.sendResponse(alice); // returns signed Key
+		byte[] signedKey = server.sendResponse(alice); // returns signed Key
+		System.out.println(signedKey.toString());
 		
 		//TODO: temp code resolve to custom exception handling if have time
-		if (signedKey == null) {
+/*		if (signedKey == null) {
 			System.out.println("User not found by server!");
 			return;
 		}*/
 		
 		//alice sets nonce to request (random number identifying request to bob)
-		//alice.sendNonce(request); //uses bobs public key
+		alice.sendNonce(request); //uses bobs public key
 		
 		
 		//bob.sendRequest(Server server, alice)

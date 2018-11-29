@@ -1,5 +1,7 @@
 package com.goldsmiths.comp.sec.model;
 
+import java.security.KeyPair;
+
 /**
  * Class representing a given key
  * 
@@ -8,11 +10,11 @@ package com.goldsmiths.comp.sec.model;
  */
 public class Key {
 
-	//owner of the key
+	// owner of the key
 	private User owner;
-	//value of key
-	private String value;
-	//boolean check on whether server has signed key
+	// value of key
+	private KeyPair value;
+	// boolean check on whether server has signed key
 	private boolean isSigned = false;
 
 	/**
@@ -20,18 +22,27 @@ public class Key {
 	 * 
 	 * @param value
 	 */
-	public Key(String value) {
+	public Key(KeyPair value) {
 		this.value = value;
 	}
-	
+
 	/**
 	 * Constructor for Key class
 	 * 
 	 * @param value
 	 */
-	public Key(String value, User user) {
+	public Key(KeyPair value, User user) {
 		this.value = value;
 		this.owner = user;
+	}
+	
+	public String getStringValue() {
+		byte[] generatedKey = getValue().getPublic().getEncoded();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < generatedKey.length; ++i) {
+			sb.append(Integer.toHexString(0x0100 + (generatedKey[i] & 0x00FF)).substring(1));
+		}
+		return sb.toString();
 	}
 
 	/**
@@ -39,7 +50,7 @@ public class Key {
 	 * 
 	 * @return
 	 */
-	public String getValue() {
+	public KeyPair getValue() {
 		return value;
 	}
 
@@ -48,7 +59,7 @@ public class Key {
 	 * 
 	 * @param value
 	 */
-	public void setValue(String value) {
+	public void setValue(KeyPair value) {
 		this.value = value;
 	}
 
@@ -87,7 +98,5 @@ public class Key {
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
-	
-	
 
 }
