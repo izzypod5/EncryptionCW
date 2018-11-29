@@ -20,8 +20,9 @@ public class Key {
 	 * 
 	 * @param value
 	 */
-	public Key(String value) {
+	public Key(String value, User user) {
 		this.value = value;
+		this.owner = user;
 	}
 
 	/**
@@ -59,5 +60,25 @@ public class Key {
 	public void setSigned(boolean isSigned) {
 		this.isSigned = isSigned;
 	}
+
+	/**
+	 * Getter for owner field
+	 * 
+	 * @return
+	 */
+	public User getOwner() {
+		return owner;
+	}
+
+	/**
+	 * Setter for owner field
+	 * 
+	 * @param owner
+	 */
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+	
+	
 
 }

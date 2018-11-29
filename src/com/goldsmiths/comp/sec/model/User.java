@@ -6,23 +6,44 @@ package com.goldsmiths.comp.sec.model;
  * @author Mariano Pekoenja , Adam Letch, Desmond Pitt
  */
 public class User {
-	
+
+	private String name;
+	private Key publicKey;
+
 	/**
-	 * Sends a request to the server to initiate communication to a given user
+	 * Getter for user name field
 	 * 
-	 * @param server The server instance
-	 * @param user User to communicate with
+	 * @return
 	 */
-	private void sendRequest(Server server, User user) {
-		
+	public String getName() {
+		return name;
 	}
-	
+
 	/**
+	 * Setter for user name field
 	 * 
-	 * @param server The object receiving the public key in this instance
+	 * @param name
 	 */
-	private void shareKey(Server server, Key key) {
-		server.setPublicKey(key);
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Users public key getter
+	 * 
+	 * @return
+	 */
+	public Key getPublicKey() {
+		return publicKey;
+	}
+
+	/**
+	 * Users public key setter
+	 * 
+	 * @param publicKey
+	 */
+	public void setPublicKey(Key publicKey) {
+		this.publicKey = publicKey;
 	};
 
 }
