@@ -4,7 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
+import java.util.ArrayList;
 
+import com.goldsmiths.comp.sec.model.Key;
+import com.goldsmiths.comp.sec.model.Request;
+import com.goldsmiths.comp.sec.model.Server;
 import com.goldsmiths.comp.sec.model.User;
 
 /**
@@ -58,8 +62,35 @@ class menu {
 
 	private void part2() {
 		System.out.println("In part2");
-		User alice = new User();
-		User bob = new User();
+		User alice = new User("Alice");
+		User bob = new User("Bob");
+		ArrayList<User> userList = new ArrayList<>();
+		userList.add(alice);
+		userList.add(bob);
+		//create server
+		//TODO: establish of request
+		Server server = new Server(userList, 512);
+		//initiate request to bob
+		Request request = new Request(100, alice, bob);
+		//alice sends request to server
+		alice.sendRequest(server, request);
+		//signed key returned from server response
+/*		Key signedKey = server.sendResponse(alice); // returns signed Key
+		
+		//TODO: temp code resolve to custom exception handling if have time
+		if (signedKey == null) {
+			System.out.println("User not found by server!");
+			return;
+		}*/
+		
+		//alice sets nonce to request (random number identifying request to bob)
+		//alice.sendNonce(request); //uses bobs public key
+		
+		
+		//bob.sendRequest(Server server, alice)
+		//server.sendResponse(User bob)
+		//bob.snedDoubleNonce(User alice);
+		//alice.sendProofNonce(User bob) //proving decryption
 	}
 
 	public static void main(String[] args) {

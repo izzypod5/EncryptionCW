@@ -20,6 +20,15 @@ public class Key {
 	 * 
 	 * @param value
 	 */
+	public Key(String value) {
+		this.value = value;
+	}
+	
+	/**
+	 * Constructor for Key class
+	 * 
+	 * @param value
+	 */
 	public Key(String value, User user) {
 		this.value = value;
 		this.owner = user;

@@ -1,5 +1,9 @@
 package com.goldsmiths.comp.sec.model;
 
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+
 /**
  * This class acts as the trusted server which distributes public keys on behalf
  * of others.
@@ -10,30 +14,83 @@ public class Server {
 
 	// public key known by all communications used for signing
 	private Key publicKey;
+	// ArrayList of users set to server, server has the role of setting public keys
+	private ArrayList<User> users = new ArrayList<>();
+	private Request currentRequest;
+
+	/**
+	 * Constructor for server
+	 * 
+	 * @param publicKey
+	 *            used for signing keys
+	 * @param users
+	 *            are the users connected to server
+	 */
+	public Server(ArrayList<User> users, int serverKeySize) {
+		this.users = users;
+		try {
+			this.publicKey = this.generateKey(serverKeySize);
+			System.out.println("Server's public key: " + this.getPublicKey().getValue());
+			// generation of users public keys
+			for (int i = 0; i < users.size(); i++) {
+				Key generatedKey = generateKey(serverKeySize);
+				users.get(i).setPublicKey(generatedKey);
+				System.out.println(users.get(i).getName() + "'s public key: " + users.get(i).getPublicKey().getValue());
+			}
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Generates RSA key
+	 * 
+	 * @param keySize
+	 *            number of bits of the keypair
+	 * @return
+	 * @throws NoSuchAlgorithmException
+	 */
+	public Key generateKey(int keySize) throws NoSuchAlgorithmException {
+		KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+		keyGen.initialize(keySize);
+		byte[] generatedKey = keyGen.genKeyPair().getPublic().getEncoded();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < generatedKey.length; ++i) {
+			sb.append(Integer.toHexString(0x0100 + (generatedKey[i] & 0x00FF)).substring(1));
+		}
+		Key key = new Key(sb.toString());
+		return key;
+	}
 
 	/**
 	 * Signs a key
 	 * 
 	 * @param key
+	 * @return
 	 */
-	public void signKey(Key key) {
+	public Key signKey(Key key) {
 		// TODO: sign given key from user using the servers public key
 		System.out.println("Signing key from: " + key.getOwner());
+		return key;
 	}
 
 	/**
-	 * Sends a request to the server to initiate communication to a given user
+	 * Sends a response from the server to the user if given user is found by server
 	 * 
-	 * @param from
-	 * @param to
+	 * @param user
+	 *            to be communicated to
+	 * @return
 	 */
-	public void executeRequest(User from, User to) {
-		System.out.println("This is " + from.getName() + " and I would like to get " + to.getName()
-				+ "'s public key. Yours sincerely " + from.getName());
-		// signing of the demanded user's key
-		this.signKey(to.getPublicKey());
-		System.out.println("Here is " + to.getName() + "'s public key signed by me. Yours sincerely S.");
-		System.out.println("This is " + from.getName() + " and I have sent you a nonce only you can read. Yours sincerely " + from.getName());
+	public Key sendResponse(User user) {
+		// signing of requested users stored public key
+		for (int i = 0; i < users.size(); i++) {
+			User current = users.get(i);
+			if (current.equals(user)) {
+				return this.signKey(user.getPublicKey());
+			}
+			// TODO: add custom exception USER NOT FOUND
+		}
+		return null;
 	}
 
 	/**
@@ -54,6 +111,32 @@ public class Server {
 	 */
 	public void setPublicKey(Key key) {
 		this.publicKey = key;
+	}
+
+	/**
+	 * Getter for users list
+	 * 
+	 * @return
+	 */
+	public ArrayList<User> getUsers() {
+		return users;
+	}
+
+	/**
+	 * Setter for users list
+	 * 
+	 * @param users
+	 */
+	public void setUsers(ArrayList<User> users) {
+		this.users = users;
+	}
+
+	public Request getCurrentRequest() {
+		return currentRequest;
+	}
+
+	public void setCurrentRequest(Request currentRequest) {
+		this.currentRequest = currentRequest;
 	}
 
 }
