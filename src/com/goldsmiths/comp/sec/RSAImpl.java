@@ -1,6 +1,7 @@
 package com.goldsmiths.comp.sec;
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Random;
 
 /***
@@ -14,8 +15,8 @@ public class RSAImpl {
 	// message used for encryption
 	private BigInteger msg;
 
-	BigInteger firstPrime = generateRandomPrime();
-	BigInteger secondPrime = generateRandomPrime();
+	BigInteger firstPrime = generateRandomPrime(128);
+	BigInteger secondPrime = generateRandomPrime(128);
 	BigInteger n = conputeN(firstPrime, secondPrime);
 	BigInteger phi = computePhi(firstPrime, secondPrime); // p-1 * q-1
 	BigInteger e = findE(phi);
@@ -122,7 +123,7 @@ public class RSAImpl {
 	 * @return value of E
 	 */
 	public static BigInteger findE(BigInteger phi) {
-		BigInteger e = generateRandomPrime();
+		BigInteger e = randomBigInteger(BigInteger.valueOf(1000000000));
 		// while phi gcd with e is greater than 1 and e is less than phi - add 1 to E
 		while (phi.gcd(e).compareTo(BigInteger.ONE) > 0 && e.compareTo(phi) < 0) {
 			e = e.add(BigInteger.ONE);
@@ -135,17 +136,59 @@ public class RSAImpl {
 	 * 
 	 * @return random prime bigint
 	 */
-	public static BigInteger generateRandomPrime() {
-		Random random = new Random();
-		BigInteger rand = BigInteger.valueOf(random.nextInt(5000) + 1000);
-		// TODO:adjusting the +100 regulate the rangecd
-		if (!isPrimeNumber(rand)) {
-			return generateRandomPrime();
-		} else {
-			return rand;
-		}
-	}
+//	public static BigInteger generateRandomPrime() {
+//	    BigInteger rand = new BigInteger();
+//		BigInteger rand = BigInteger.valueOf(random.nextInt(5000) + 1000);
+	
+//		// TODO:adjusting the +100 regulate the rangecd
+//		if (!isPrimeNumber(rand)) {
+//			return generateRandomPrime();
+//		} else {
+//			return rand;
+//		}
+//	}
+//	public static BigInteger generateRandomPrime(BigInteger bigInteger) {
+//		BigInteger rnd = randomBigInteger(BigInteger.valueOf(10000000000000000000));
+//		//Random rnd = new Random();
+//	    BigInteger prime = new BigInteger("4");
+//	    while(!isPrimeNumber(prime)) prime = randomBigInteger(BigInteger.valueOf(10000000000000000000));
+//	    return prime;
+//	}
+	public static BigInteger generateRandomPrime(int lenght) {
+		
+		// create a random object
+	      Random rnd = new Random();
 
+	      // assign probablePrime result to bi using bitLength and rnd
+	      // static method is called using class name
+	      BigInteger random = BigInteger.probablePrime(lenght, rnd);
+	      return random;
+		
+	}
+	/**
+	 * Generate a random big integer with range up to n
+	 * @param n
+	 * @return
+	 */
+	public static BigInteger randomBigInteger(BigInteger n) {
+	    Random randomNumber = new Random();
+	    BigInteger result = new BigInteger(n.bitLength(), randomNumber);
+	    while( result.compareTo(n) >= 0 ) {
+	        result = new BigInteger(n.bitLength(), randomNumber);
+	    }
+	    return result;
+	}
+	
+	
+	
+//	public static BigInteger randomBigInteger(BigInteger n) {
+//	    Random randomNumber = new Random();
+//	    BigInteger result = new BigInteger(n.bitLength(), randomNumber);
+//	    while( result.compareTo(n) >= 0 ) {
+//	        result = new BigInteger(n.bitLength(), randomNumber);
+//	    }
+//	    return result;
+//	}
 	/**
 	 * Computes the value of N being the multiplication of the two primes
 	 * 
