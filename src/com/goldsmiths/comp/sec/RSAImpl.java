@@ -1,7 +1,6 @@
 package com.goldsmiths.comp.sec;
 
 import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.Random;
 
 /***
@@ -28,7 +27,8 @@ public class RSAImpl {
 	/**
 	 * Class constructor for RSA encryption class
 	 * 
-	 * @param msg to be used by RSA implementation class
+	 * @param msg
+	 *            to be used by RSA implementation class
 	 */
 	public RSAImpl(BigInteger msg) {
 		this.msg = msg;
@@ -104,9 +104,12 @@ public class RSAImpl {
 	 * Used to perform encryption to get the cipher text or decryption to return the
 	 * original message
 	 * 
-	 * @param msg message to be used for RSA
-	 * @param exp exponent to be used
-	 * @param mod modulus value
+	 * @param msg
+	 *            message to be used for RSA
+	 * @param exp
+	 *            exponent to be used
+	 * @param mod
+	 *            modulus value
 	 * @return the value returned after the computation of the: c = m^e mod n | m =
 	 *         c^d mod n
 	 */
@@ -119,7 +122,8 @@ public class RSAImpl {
 	/**
 	 * Computes the value of E
 	 * 
-	 * @param phi to be used for comparison when generating the value for e
+	 * @param phi
+	 *            to be used for comparison when generating the value for e
 	 * @return value of E
 	 */
 	public static BigInteger findE(BigInteger phi) {
@@ -134,66 +138,44 @@ public class RSAImpl {
 	/**
 	 * Utility method for returning a random prime number
 	 * 
-	 * @return random prime bigint
+	 * @param length
+	 *            length of bits
+	 * @return the random prime bigint
 	 */
-//	public static BigInteger generateRandomPrime() {
-//	    BigInteger rand = new BigInteger();
-//		BigInteger rand = BigInteger.valueOf(random.nextInt(5000) + 1000);
-	
-//		// TODO:adjusting the +100 regulate the rangecd
-//		if (!isPrimeNumber(rand)) {
-//			return generateRandomPrime();
-//		} else {
-//			return rand;
-//		}
-//	}
-//	public static BigInteger generateRandomPrime(BigInteger bigInteger) {
-//		BigInteger rnd = randomBigInteger(BigInteger.valueOf(10000000000000000000));
-//		//Random rnd = new Random();
-//	    BigInteger prime = new BigInteger("4");
-//	    while(!isPrimeNumber(prime)) prime = randomBigInteger(BigInteger.valueOf(10000000000000000000));
-//	    return prime;
-//	}
-	public static BigInteger generateRandomPrime(int lenght) {
-		
-		// create a random object
-	      Random rnd = new Random();
+	public static BigInteger generateRandomPrime(int length) {
 
-	      // assign probablePrime result to bi using bitLength and rnd
-	      // static method is called using class name
-	      BigInteger random = BigInteger.probablePrime(lenght, rnd);
-	      return random;
-		
+		// create a random object
+		Random rnd = new Random();
+
+		// assign probablePrime result to bi using bitLength and rnd
+		// static method is called using class name
+		BigInteger random = BigInteger.probablePrime(length, rnd);
+		return random;
+
 	}
+
 	/**
 	 * Generate a random big integer with range up to n
+	 * 
 	 * @param n
 	 * @return
 	 */
 	public static BigInteger randomBigInteger(BigInteger n) {
-	    Random randomNumber = new Random();
-	    BigInteger result = new BigInteger(n.bitLength(), randomNumber);
-	    while( result.compareTo(n) >= 0 ) {
-	        result = new BigInteger(n.bitLength(), randomNumber);
-	    }
-	    return result;
+		Random randomNumber = new Random();
+		BigInteger result = new BigInteger(n.bitLength(), randomNumber);
+		while (result.compareTo(n) >= 0) {
+			result = new BigInteger(n.bitLength(), randomNumber);
+		}
+		return result;
 	}
-	
-	
-	
-//	public static BigInteger randomBigInteger(BigInteger n) {
-//	    Random randomNumber = new Random();
-//	    BigInteger result = new BigInteger(n.bitLength(), randomNumber);
-//	    while( result.compareTo(n) >= 0 ) {
-//	        result = new BigInteger(n.bitLength(), randomNumber);
-//	    }
-//	    return result;
-//	}
+
 	/**
 	 * Computes the value of N being the multiplication of the two primes
 	 * 
-	 * @param q1 first prime
-	 * @param p1 second prime
+	 * @param q1
+	 *            first prime
+	 * @param p1
+	 *            second prime
 	 * @return p1 * q1
 	 */
 	public static BigInteger conputeN(BigInteger q1, BigInteger p1) {
@@ -203,8 +185,10 @@ public class RSAImpl {
 	/**
 	 * Computes the value of phi being (p-1) * (q-1)
 	 * 
-	 * @param p first prime
-	 * @param q second prime 
+	 * @param p
+	 *            first prime
+	 * @param q
+	 *            second prime
 	 * @return (p-1) * (q-1) aka phi
 	 */
 	public static BigInteger computePhi(BigInteger p, BigInteger q) {
@@ -223,7 +207,8 @@ public class RSAImpl {
 	/**
 	 * Setter for the msg field
 	 * 
-	 * @param msg value to be set for msg field
+	 * @param msg
+	 *            value to be set for msg field
 	 */
 	public void setMsg(BigInteger msg) {
 		this.msg = msg;
