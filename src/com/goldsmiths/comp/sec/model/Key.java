@@ -5,7 +5,7 @@ import java.security.KeyPair;
 /**
  * Class representing a given key
  * 
- * @author Mariano Pekoenja , Adam Letch, Desmond Pitt
+ * @author Mariano Pecorella , Adam Letch, Desmond Pitt
  *
  */
 public class Key {

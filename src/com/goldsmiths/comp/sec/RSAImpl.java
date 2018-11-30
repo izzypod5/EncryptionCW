@@ -6,7 +6,7 @@ import java.util.Random;
 /***
  * This class acts as the RSA implementation class.
  * 
- * @author Mariano Pekoenja , Adam Letch, Desmond Pitt
+ * @author Mariano Pecorella , Adam Letch, Desmond Pitt
  *
  */
 public class RSAImpl {

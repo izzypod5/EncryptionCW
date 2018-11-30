@@ -14,7 +14,7 @@ import com.goldsmiths.comp.sec.model.User;
 /**
  * User interface class to display output via the console
  * 
- * @author Mariano Pekoenja , Adam Letch, Desmond Pitt
+ * @author Mariano Pecorella , Adam Letch, Desmond Pitt
  *
  */
 public class menu {

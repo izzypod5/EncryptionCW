@@ -2,7 +2,7 @@ package com.goldsmiths.comp.sec.model;
 /**
  * Request object symbolising a communication attempt
  * 
- * @author Mariano Pekoenja , Adam Letch, Desmond Pitt
+ * @author Mariano Pecorella , Adam Letch, Desmond Pitt
  *
  */
 public class Request {

@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * This class acts as the user that communicates with the server.
  * 
- * @author Mariano Pekoenja , Adam Letch, Desmond Pitt
+ * @author Mariano Pecorella , Adam Letch, Desmond Pitt
  */
 public class User {
 

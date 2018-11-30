@@ -14,7 +14,7 @@ import sun.misc.BASE64Encoder;
  * This class acts as the trusted server which distributes public keys on behalf
  * of others.
  * 
- * @author Mariano Pekoenja , Adam Letch, Desmond Pitt
+ * @author Mariano Pecorella , Adam Letch, Desmond Pitt
  */
 public class Server {
 
