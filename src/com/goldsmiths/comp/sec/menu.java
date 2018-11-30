@@ -62,10 +62,16 @@ public class menu {
 	private void part1(BufferedReader in) throws IOException {
 		System.out.println("In part1");
 		System.out.println("Please enter the message you wish to be encrypted:");
-		BigInteger input = new BigInteger(in.readLine());
+		String s = in.readLine();
+		System.out.println("the original message: " + s);
+
+		 byte[] b = s.getBytes("US-ASCII");		
+		
+		BigInteger input = new BigInteger(b);
 		RSAImpl rsa = new RSAImpl(input);
 		rsa.encrypt();
 		rsa.decrypt();
+
 	}
 
 	/**

@@ -34,7 +34,8 @@ public class RSAImpl {
 		this.msg = msg;
 
 		// debugging
-		System.out.println("original message is: " + getMsg());
+
+		System.out.println("acii version of the original message: " + getMsg());
 		System.out.println("First Prime: " + firstPrime);
 		System.out.println("Second Prime: " + secondPrime);
 		System.out.println("The product of two Prime number(N) is: " + n);
@@ -61,7 +62,9 @@ public class RSAImpl {
 	 */
 	public void decrypt() {
 		BigInteger om = doRSA(getMsg(), d, n);
-		System.out.println("decripted message is: " + om);
+		String textBack = new String(om.toByteArray());
+
+		System.out.println("decripted message is: " + textBack);
 		// sets the msg field to the value of the decrypted text
 		setMsg(om);
 	}
