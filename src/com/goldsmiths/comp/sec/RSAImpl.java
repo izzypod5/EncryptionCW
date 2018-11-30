@@ -14,8 +14,8 @@ public class RSAImpl {
 	// message used for encryption
 	private BigInteger msg;
 
-	BigInteger firstPrime = generateRandomPrime(128);
-	BigInteger secondPrime = generateRandomPrime(128);
+	BigInteger firstPrime = generateRandomPrime(1024);
+	BigInteger secondPrime = generateRandomPrime(1024);
 	BigInteger n = conputeN(firstPrime, secondPrime);
 	BigInteger phi = computePhi(firstPrime, secondPrime); // p-1 * q-1
 	BigInteger e = findE(phi);
