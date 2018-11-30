@@ -47,8 +47,7 @@ public class menu {
 				}
 				System.out.println(TITLE);
 			} catch (Exception ex) {
-				ex.printStackTrace();
-				System.out.println(ex.getMessage());
+				System.out.println("Invalid user input detected please input a number 0-2");
 			}
 		} // end while
 		System.out.println("Bye!");

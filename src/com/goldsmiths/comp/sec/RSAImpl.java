@@ -157,8 +157,8 @@ public class RSAImpl {
 	/**
 	 * Generate a random big integer with range up to n
 	 * 
-	 * @param n
-	 * @return
+	 * @param n bitlength
+	 * @return random bigint
 	 */
 	public static BigInteger randomBigInteger(BigInteger n) {
 		Random randomNumber = new Random();
