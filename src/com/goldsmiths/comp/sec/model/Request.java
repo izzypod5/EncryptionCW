@@ -1,11 +1,8 @@
 package com.goldsmiths.comp.sec.model;
 
-import java.math.BigInteger;
-
 public class Request {
 
 	public long id;
-	public BigInteger nonce;
 	public User fromUser;
 	public User toUser;
 	// TODO: establish time limit on request
@@ -22,14 +19,6 @@ public class Request {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public BigInteger getNonce() {
-		return nonce;
-	}
-
-	public void setNonce(BigInteger nonce) {
-		this.nonce = nonce;
 	}
 
 	public User getFromUser() {

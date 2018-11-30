@@ -1,6 +1,8 @@
 package com.goldsmiths.comp.sec.model;
 
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Random;
 
 /**
@@ -12,41 +14,51 @@ public class User {
 
 	private String name;
 	private Key publicKey;
-	
+	private HashMap<User, BigInteger> nonceMap = new HashMap<>();
+
 	public User(String name) {
 		this.name = name;
 	}
 
 	public void sendRequest(Server server, Request request) {
-		System.out.println("Request sent from: " + request.getFromUser().getName() + " to " + request.getToUser().getName());
+		System.out.println(
+				"Request sent from: " + request.getFromUser().getName() + " to " + request.getToUser().getName());
 		server.setCurrentRequest(request);
 	}
-	
+
 	/**
 	 * Sets a nonce value to the request
 	 * 
 	 * @param request
 	 * @return
 	 */
-	public Request sendNonce(Request request) {
+	public void sendNonces(User toUser) {
 		BigInteger randomBigInt = randomBigInteger(BigInteger.valueOf(1000000));
-		System.out.println("Random Big Int value: " + randomBigInt);
-		request.setNonce(randomBigInt);
-		return request;
+		System.out.println("Nonce value returned " + randomBigInt + " for " + toUser.getName());
+		HashMap<User, BigInteger> nonceMap = toUser.getNonceMap();
+		// adds a nonce to the users map of nonces with their own nonce
+		for (Entry<User, BigInteger> entry : this.nonceMap.entrySet()) {
+		    System.out.println(entry.getKey().getName() + "/" + entry.getValue());
+			nonceMap.put(entry.getKey(), entry.getValue());
+		}
+		nonceMap.put(this, randomBigInt);
+		System.out.println(this.getName() + " has stored nonce");
+		toUser.setNonceMap(nonceMap);
 	}
-	
+
 	/**
 	 * Generate a random big integer with range up to n
+	 * 
 	 * @param n
 	 * @return
 	 */
 	public BigInteger randomBigInteger(BigInteger n) {
-	    Random randomNumber = new Random();
-	    BigInteger result = new BigInteger(n.bitLength(), randomNumber);
-	    while( result.compareTo(n) >= 0 ) {
-	        result = new BigInteger(n.bitLength(), randomNumber);
-	    }
-	    return result;
+		Random randomNumber = new Random();
+		BigInteger result = new BigInteger(n.bitLength(), randomNumber);
+		while (result.compareTo(n) >= 0) {
+			result = new BigInteger(n.bitLength(), randomNumber);
+		}
+		return result;
 	}
 
 	/**
@@ -83,6 +95,14 @@ public class User {
 	 */
 	public void setPublicKey(Key publicKey) {
 		this.publicKey = publicKey;
+	}
+
+	public HashMap<User, BigInteger> getNonceMap() {
+		return nonceMap;
+	}
+
+	public void setNonceMap(HashMap<User, BigInteger> nonceMap) {
+		this.nonceMap = nonceMap;
 	};
 
 }

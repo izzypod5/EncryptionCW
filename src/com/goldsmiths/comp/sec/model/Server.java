@@ -34,7 +34,7 @@ public class Server {
 		this.users = users;
 		try {
 			this.publicKey = new Key(this.generateKey(serverKeySize));
-			System.out.println("Server's public key: " + this.getPublicKey().getValue());
+			System.out.println("Server's public key: " + this.getPublicKey().getStringValue());
 			// generation of users public keys
 			for (int i = 0; i < users.size(); i++) {
 				Key generatedKey = new Key(generateKey(serverKeySize), users.get(i));
@@ -71,7 +71,7 @@ public class Server {
 	public byte[] signKey(Key desiredKey) {
 		byte[] data = desiredKey.getStringValue().getBytes();
 		// TODO: sign given key from user using the servers public key
-		System.out.println("Signing key from: " + desiredKey.getOwner().getName());
+		System.out.println("Signing " + desiredKey.getOwner().getName() + "'s public key");
 		try {
 			// sign using the servers known public key using sha1 rsa
 			Signature sig;
@@ -96,7 +96,6 @@ public class Server {
 	 * @param user
 	 *            to be communicated to
 	 * @return
-	 * @throws NoSuchAlgorithmException
 	 */
 	public byte[] sendResponse(User user) {
 		// signing of requested users stored public key
