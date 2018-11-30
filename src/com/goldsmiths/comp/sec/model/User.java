@@ -12,33 +12,45 @@ import java.util.Random;
  */
 public class User {
 
+	//user's name
 	private String name;
+	//public key of the user to be stored
 	private Key publicKey;
+	//map of nonces the user holds
 	private HashMap<User, BigInteger> nonceMap = new HashMap<>();
 
+	/**
+	 * Constructor for the user class
+	 * 
+	 * @param name the name to be associated to the user
+	 */
 	public User(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Method is more so to represent the communication has been made to the server
+	 * 
+	 * @param server Is trusted third party to its users
+	 * @param request  Represents the communication request
+	 */
 	public void sendRequest(Server server, Request request) {
 		System.out.println(
 				"Request sent from: " + request.getFromUser().getName() + " to " + request.getToUser().getName());
 		server.setCurrentRequest(request);
 	}
 
-	/**
-	 * Sets a nonce value to the request
-	 * 
-	 * @param request
-	 * @return
-	 */
+/**
+ * Sends the nonces to the given user
+ * 
+ * @param toUser is the user to receive nonces
+ */
 	public void sendNonces(User toUser) {
 		BigInteger randomBigInt = randomBigInteger(BigInteger.valueOf(1000000));
 		System.out.println("Nonce value returned " + randomBigInt + " for " + toUser.getName());
 		HashMap<User, BigInteger> nonceMap = toUser.getNonceMap();
 		// adds a nonce to the users map of nonces with their own nonce
 		for (Entry<User, BigInteger> entry : this.nonceMap.entrySet()) {
-		    System.out.println(entry.getKey().getName() + "/" + entry.getValue());
 			nonceMap.put(entry.getKey(), entry.getValue());
 		}
 		nonceMap.put(this, randomBigInt);
@@ -47,10 +59,10 @@ public class User {
 	}
 
 	/**
-	 * Generate a random big integer with range up to n
+	 * Generate a random big integer with range up to n.bitlength
 	 * 
-	 * @param n
-	 * @return
+	 * @param n is the number range using bitlength
+	 * @return a random big integer to be used for nonces
 	 */
 	public BigInteger randomBigInteger(BigInteger n) {
 		Random randomNumber = new Random();
@@ -64,7 +76,7 @@ public class User {
 	/**
 	 * Getter for user name field
 	 * 
-	 * @return
+	 * @return name field of user
 	 */
 	public String getName() {
 		return name;
@@ -73,7 +85,7 @@ public class User {
 	/**
 	 * Setter for user name field
 	 * 
-	 * @param name
+	 * @param name to set for name field
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -82,7 +94,8 @@ public class User {
 	/**
 	 * Users public key getter
 	 * 
-	 * @return
+	 * @return the key object belonging to the user by the server
+	 * @see Key
 	 */
 	public Key getPublicKey() {
 		return publicKey;
@@ -91,16 +104,26 @@ public class User {
 	/**
 	 * Users public key setter
 	 * 
-	 * @param publicKey
+	 * @param publicKey setting of the public key by the server
 	 */
 	public void setPublicKey(Key publicKey) {
 		this.publicKey = publicKey;
 	}
 
+	/**
+	 * Getter for the nonce map the user stores
+	 * 
+	 * @return map of nonces
+	 */
 	public HashMap<User, BigInteger> getNonceMap() {
 		return nonceMap;
 	}
 
+	/**
+	 * Setter for nonceMap
+	 * 
+	 * @param nonceMap contains a map of nonces to be set
+	 */
 	public void setNonceMap(HashMap<User, BigInteger> nonceMap) {
 		this.nonceMap = nonceMap;
 	};

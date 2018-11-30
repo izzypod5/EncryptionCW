@@ -14,28 +14,32 @@ public class Key {
 	private User owner;
 	// value of key
 	private KeyPair value;
-	// boolean check on whether server has signed key
-	private boolean isSigned = false;
 
 	/**
 	 * Constructor for Key class
 	 * 
-	 * @param value
+	 * @param value is the keypair generated
 	 */
 	public Key(KeyPair value) {
 		this.value = value;
 	}
 
 	/**
-	 * Constructor for Key class
+	 * Constructor for Key class to be used when user is also known
 	 * 
-	 * @param value
+	 * @param value is the keypair generated
+	 * @param owner is the owner of the key
 	 */
-	public Key(KeyPair value, User user) {
+	public Key(KeyPair value, User owner) {
 		this.value = value;
-		this.owner = user;
+		this.owner = owner;
 	}
 	
+	/**
+	 * Converts the public key into a string to be displayed as console output
+	 * 
+	 * @return a stringified version of the public key
+	 */
 	public String getStringValue() {
 		byte[] generatedKey = getValue().getPublic().getEncoded();
 		StringBuilder sb = new StringBuilder();
@@ -48,7 +52,7 @@ public class Key {
 	/**
 	 * Value field getter
 	 * 
-	 * @return
+	 * @return generated keypair
 	 */
 	public KeyPair getValue() {
 		return value;
@@ -57,34 +61,16 @@ public class Key {
 	/**
 	 * Value field setter
 	 * 
-	 * @param value
+	 * @param value to set for generated keypair
 	 */
 	public void setValue(KeyPair value) {
 		this.value = value;
 	}
 
 	/**
-	 * Boolean sign field getter
-	 * 
-	 * @return
-	 */
-	public boolean isSigned() {
-		return isSigned;
-	}
-
-	/**
-	 * Boolean sign field setter
-	 * 
-	 * @param isSigned
-	 */
-	public void setSigned(boolean isSigned) {
-		this.isSigned = isSigned;
-	}
-
-	/**
 	 * Getter for owner field
 	 * 
-	 * @return
+	 * @return user the key belongs to
 	 */
 	public User getOwner() {
 		return owner;
@@ -93,7 +79,7 @@ public class Key {
 	/**
 	 * Setter for owner field
 	 * 
-	 * @param owner
+	 * @param owner to set who the key belongs to
 	 */
 	public void setOwner(User owner) {
 		this.owner = owner;
