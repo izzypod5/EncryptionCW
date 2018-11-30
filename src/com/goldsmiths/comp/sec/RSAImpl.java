@@ -4,12 +4,12 @@ import java.math.BigInteger;
 import java.util.Random;
 
 /***
- * 
+ * This class acts as the RSA implementation class.
  * 
  * @author Mariano Pekoenja , Adam Letch, Desmond Pitt
  *
  */
-public class GenerateRandPrime {
+public class RSAImpl {
 
 	// message used for encryption
 	private BigInteger msg;
@@ -27,9 +27,9 @@ public class GenerateRandPrime {
 	/**
 	 * Class constructor for RSA encryption class
 	 * 
-	 * @param msg
+	 * @param msg to be used by RSA implementation class
 	 */
-	public GenerateRandPrime(BigInteger msg) {
+	public RSAImpl(BigInteger msg) {
 		this.msg = msg;
 
 		// debugging
@@ -103,9 +103,9 @@ public class GenerateRandPrime {
 	 * Used to perform encryption to get the cipher text or decryption to return the
 	 * original message
 	 * 
-	 * @param x
-	 * @param e
-	 * @param n
+	 * @param msg message to be used for RSA
+	 * @param exp exponent to be used
+	 * @param mod modulus value
 	 * @return the value returned after the computation of the: c = m^e mod n | m =
 	 *         c^d mod n
 	 */
@@ -118,7 +118,7 @@ public class GenerateRandPrime {
 	/**
 	 * Computes the value of E
 	 * 
-	 * @param phi
+	 * @param phi to be used for comparison when generating the value for e
 	 * @return value of E
 	 */
 	public static BigInteger findE(BigInteger phi) {
@@ -149,8 +149,8 @@ public class GenerateRandPrime {
 	/**
 	 * Computes the value of N being the multiplication of the two primes
 	 * 
-	 * @param q1
-	 * @param p1
+	 * @param q1 first prime
+	 * @param p1 second prime
 	 * @return p1 * q1
 	 */
 	public static BigInteger conputeN(BigInteger q1, BigInteger p1) {
@@ -160,9 +160,9 @@ public class GenerateRandPrime {
 	/**
 	 * Computes the value of phi being (p-1) * (q-1)
 	 * 
-	 * @param p
-	 * @param q
-	 * @return (p-1) * (q-1)
+	 * @param p first prime
+	 * @param q second prime 
+	 * @return (p-1) * (q-1) aka phi
 	 */
 	public static BigInteger computePhi(BigInteger p, BigInteger q) {
 		return p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
@@ -180,7 +180,7 @@ public class GenerateRandPrime {
 	/**
 	 * Setter for the msg field
 	 * 
-	 * @param msg
+	 * @param msg value to be set for msg field
 	 */
 	public void setMsg(BigInteger msg) {
 		this.msg = msg;
